@@ -123,7 +123,7 @@ def minimax(board_list,depth, isMaxer, count):
     if state == 'X':
         return 10
 
-    if depth < 4:
+    if depth < 3:
         if isMaxer:
             bestScore = -math.inf
             for index1 in range(len(board_list)):
@@ -145,9 +145,9 @@ def minimax(board_list,depth, isMaxer, count):
             return bestScore
     else:
         if board_list.count('X') >= board_list.count('O'):
-            return 0;
+            return -1;
         if board_list.count('X') < board_list.count('O'):
-            return 10;
+            return 1;
 
 # Check if the board is full or not
 # Default it is not full
@@ -182,6 +182,13 @@ def main():
             if next_move == 1 and board_not_full(board_list):
                 player()
                 next_move = -1
+            winner = winner_check(board_list)
+            if winner == 'O':
+                print("You won.")
+                break
+            if winner == 'X':
+                print("Computer won.")
+                break
             if next_move == -1 and board_not_full(board_list):
                 computer_move = make_best_move()
                 board_list[computer_move] = 'X'
