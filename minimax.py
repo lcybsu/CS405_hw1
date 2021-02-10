@@ -104,8 +104,8 @@ def make_best_move():
         if board_list[index] == '-':
             board_list[index] = 'X'
             count = 0
-            score = minimax(board_list,0,False, count)
-            print("score: ", score)
+            score = minimax(board_list, 0 ,False, count)
+            # print("score: ", score)
             board_list[index] = '-'
             if (score > bestScore):
                 bestScore = score
@@ -114,7 +114,7 @@ def make_best_move():
     return bestMove
 
 def minimax(board_list,depth, isMaxer, count):
-    print("start minimax")
+    # print("print depth", depth)
     state = winner_check(board_list)
     if not board_not_full(board_list) and state == '':
         return 0
@@ -123,28 +123,31 @@ def minimax(board_list,depth, isMaxer, count):
     if state == 'X':
         return 10
 
-    count += 1
-    print("count: ", count)
-
-    if isMaxer:
-        bestScore = -math.inf
-        for index1 in range(len(board_list)):
-            if board_list[index1] == '-':
-                print("index1 ", index1)
-                board_list[index1] = 'X'
-                score = minimax(board_list, depth + 1, False, count)
-                board_list[index1] = '-'
-                bestScore = max(score, bestScore)
-        return bestScore
+    if depth < 4:
+        if isMaxer:
+            bestScore = -math.inf
+            for index1 in range(len(board_list)):
+                if board_list[index1] == '-':
+                    # print("index1 ", index1)
+                    board_list[index1] = 'X'
+                    score = minimax(board_list, depth + 1, False, count)
+                    board_list[index1] = '-'
+                    bestScore = max(score, bestScore)
+            return bestScore
+        else:
+            bestScore = math.inf
+            for index1 in range(len(board_list)):
+                if board_list[index1] == '-':
+                    board_list[index1] = 'O'
+                    score = minimax(board_list, depth + 1, True, count)
+                    board_list[index1] = '-'
+                    bestScore = min(score, bestScore)
+            return bestScore
     else:
-        bestScore = math.inf
-        for index1 in range(len(board_list)):
-            if board_list[index1] == '-':
-                board_list[index1] = 'O'
-                score = minimax(board_list, depth + 1, True, count)
-                board_list[index1] = '-'
-                bestScore = min(score, bestScore)
-        return bestScore
+        if board_list.count('X') >= board_list.count('O'):
+            return 0;
+        if board_list.count('X') < board_list.count('O'):
+            return 10;
 
 # Check if the board is full or not
 # Default it is not full
